@@ -17,6 +17,10 @@ fb_debug_token_url = "https://graph.facebook.com/debug_token?"
 
 app = Flask(__name__)
 
+# TODO: address? post code : detailed address; <- let user type in when they want to request or provide a ride
+#       add provider
+#       add consumer
+
 
 @app.route("/", methods=['GET'])
 def index():
@@ -75,14 +79,26 @@ def get_fb_credentials():
 
 # to fill in information like phone number and email (since in fb_callback,
 # each user only have userid set)
-#   Example: /fill_user?user_id=test&phong_number=1234567890&email=example@test.com
+#   Example: /fill_user?user_id=test&phong_number=1234567890&email=example@test.com&nickname=test_nick_name
 @app.route("/fill_user")
 def fill_user():
     user_id = request.args.get("user_id")
     phone_number = request.args.get("phone_number")
     email = request.args.get("email")
+    nickname = request.args.get("nickname")
 
-    mongo.fill_facebook_user(user_id, phone_number, email)
+    mongo.fill_facebook_user(user_id, phone_number, email, nickname)
+    return json.dumps({"status": 200})
+
+
+@app.route("/provide_ride")
+def fill_user():
+    user_id = request.args.get("user_id")
+    time = request.args.get("time")
+    target_address = request.args.get("target_address")
+
+    mongo.add_provide_info(user_id, time, target_address)
+    return json.dumps({"status": 200})
 
 
 if __name__ == "__main__":
