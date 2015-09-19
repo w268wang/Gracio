@@ -10,7 +10,7 @@ AWS_IP_ADDRESS = "54.152.97.131"
 BASE_URL = "http://localhost:5000"
 
 if urllib2.urlopen('http://ip.42.pl/raw').read() == AWS_IP_ADDRESS:
-    log.startLogging(open('/var/log/syclops/syclops.log', 'w'))
+    log.startLogging(open('/var/log/gracio/gracio.log', 'w'))
     BASE_URL = "http://" + mongo.AWS_IP_ADDRESS
 
 FB_APP_ID = "1113294778698674"
