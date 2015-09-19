@@ -4,10 +4,10 @@ from flask import Flask, Response, request, make_response, redirect
 
 import services.mongo_service as mongo
 
-import requests, json
+import requests, json, os
 
 
-BASE_URL = "http://127.0.0.1:5000"
+BASE_URL = "http://localhost:5000"
 
 FB_APP_ID = "1113294778698674"
 FB_APP_SECRET = "fd70f888513b16e6825523618ae5bf18"
@@ -22,9 +22,22 @@ app = Flask(__name__)
 #       add consumer
 
 
+def get_file(filename):  # pragma: no cover
+    try:
+        src = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
+        # Figure out how flask returns static files
+        # Tried:
+        # - render_template
+        # - send_file
+        # This should not be so non-obvious
+        return open(src).read()
+    except IOError as exc:
+        return str(exc)
+
 @app.route("/", methods=['GET'])
 def index():
-    return Response("abc", mimetype="text/html")
+    content = get_file('template/index.html')
+    return Response(content, mimetype="text/html")
 
 
 # call when the sign in with fb button gets clicked

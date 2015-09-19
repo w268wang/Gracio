@@ -56,8 +56,7 @@ def check_user(user_id):
     """
 
     collection = db["user_info"]
-    key = "user_id"
-    mongo_key = {key: user_id}
+    mongo_key = {"user_id": user_id}
     cursor = collection.find(mongo_key)
     if cursor.count() == 0:
         return 0
