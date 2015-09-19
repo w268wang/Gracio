@@ -83,7 +83,7 @@ def get_fb_credentials():
     if not user_exists:
         mongo.add_facebook_user(user_id)
 
-    app_callback_url = BASE_URL + "/mobile"
+    app_callback_url = BASE_URL
 
     res = make_response(redirect(app_callback_url))
     res.set_cookie("status", "0")
