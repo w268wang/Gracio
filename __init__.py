@@ -4,7 +4,8 @@ from flask import Flask, Response, request, make_response, redirect
 
 import services.mongo_service as mongo
 
-import requests, json, os
+import requests, json, os, urllib2
+from twisted.python import log
 
 AWS_IP_ADDRESS = "54.152.97.131"
 BASE_URL = "http://localhost:5000"
