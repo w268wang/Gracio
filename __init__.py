@@ -1,6 +1,6 @@
 __author__ = 'wwang'
 
-from flask import Flask, Response, request, make_response, redirect
+from flask import Flask, Response, request, make_response, redirect, send_from_directory
 
 import services.mongo_service as mongo
 
@@ -20,7 +20,7 @@ FB_APP_ACCESS_TOKEN = "1113294778698674|VcknILT54UuU9aAybSXQJfLkbP4"
 fb_access_token_url = "https://graph.facebook.com/v2.4/oauth/access_token?"
 fb_debug_token_url = "https://graph.facebook.com/debug_token?"
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 # TODO: address? post code : detailed address; <- let user type in when they want to request or provide a ride
 #       add provider
@@ -41,7 +41,7 @@ def get_file(filename):  # pragma: no cover
 
 @app.route("/", methods=['GET'])
 def index():
-    content = get_file('front-end/index.html')
+    content = get_file('templates/index.html')
     return Response(content, mimetype="text/html")
 
 
