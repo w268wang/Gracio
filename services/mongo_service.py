@@ -18,10 +18,10 @@ except urllib2.HTTPError:
     url = 'mongodb://' + AWS_IP_ADDRESS + ':27017'
     client = pymongo.MongoClient(url)
     db = client[DB_NAME]
-# except Exception as e:
-#
-#     print("Mongo client initialize failed!")
-#     db = None
+except Exception as e:
+
+    print("Mongo client initialize failed!")
+    db = None
 
 
 # +++++ Handle user +++++
