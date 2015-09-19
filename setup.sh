@@ -9,3 +9,4 @@ function exitOnError() {
 sudo pip install Flask || exitOnError "error install flask"
 sudo pip install pymongo
 sudo pip install oauth2
+sudo pip install twisted
