@@ -92,12 +92,24 @@ def fill_user():
 
 
 @app.route("/provide_ride")
-def fill_user():
+def provide_ride():
     user_id = request.args.get("user_id")
     time = request.args.get("time")
     target_address = request.args.get("target_address")
+    quantity = request.args.get("quantity")
 
-    mongo.add_provide_info(user_id, time, target_address)
+    mongo.add_provide_info(user_id, time, target_address, quantity)
+    return json.dumps({"status": 200})
+
+
+@app.route("/request_ride")
+def request_ride():
+    user_id = request.args.get("user_id")
+    time = request.args.get("time")
+    target_address = request.args.get("target_address")
+    quantity = request.args.get("quantity")
+
+    mongo.add_provide_info(user_id, time, target_address, quantity)
     return json.dumps({"status": 200})
 
 

@@ -1,7 +1,7 @@
 __author__ = 'wwang'
 
 import pymongo
-import urllib2, time
+import urllib2, time as time_util
 
 AWS_IP_ADDRESS = "54.152.97.131"
 DB_NAME = "test"
@@ -98,18 +98,18 @@ def get_objectid_by_userid(user_id):
 # +++++ handle ride +++++
 
 
-def add_provide_info(user_id, time, target_address):
+def add_provide_info(user_id, time, target_address, quantity):
     collection = db["provide_info"]
     user_id = get_objectid_by_userid(user_id)
-    doc = {"user_id": user_id, "time": time, "target_address": target_address}
+    doc = {"user_id": user_id, "time": time, "target_address": target_address, "quantity": quantity}
     collection.insert(doc)
     return
 
 
-def add_request_info(user_id, time, target_address):
+def add_request_info(user_id, time, target_address, quantity):
     collection = db["request_info"]
     user_id = get_objectid_by_userid(user_id)
-    doc = {"user_id": user_id, "time": time, "target_address": target_address}
+    doc = {"user_id": user_id, "time": time, "target_address": target_address, "quantity": quantity}
     collection.insert(doc)
     return
 
@@ -140,11 +140,11 @@ if __name__ == "__main__":
     print(get_objectid_by_userid("fakfasdf"))
 
     # test ride part
-    add_provide_info("fakfasdf", int(time.time()), "123, 234")
-    print(int(time.time()) + 1)
-    print(get_provide_info_list(int(time.time()) + 1, "123, 234"))
+    add_provide_info("fakfasdf", int(time_util.time()), "123, 234")
+    print(int(time_util.time()) + 1)
+    print(get_provide_info_list(int(time_util.time()) + 1, "123, 234"))
 
-    add_request_info("fakfasdf", int(time.time()), "123, 234")
-    print(int(time.time()) - 5)
-    print(get_request_info_list(int(time.time()) - 5, "123, 234"))
+    add_request_info("fakfasdf", int(time_util.time()), "123, 234")
+    print(int(time_util.time()) - 5)
+    print(get_request_info_list(int(time_util.time()) - 5, "123, 234"))
 
