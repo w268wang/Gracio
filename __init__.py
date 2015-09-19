@@ -41,7 +41,7 @@ def get_file(filename):  # pragma: no cover
 
 @app.route("/", methods=['GET'])
 def index():
-    content = get_file('template/index.html')
+    content = get_file('front-end/index.html')
     return Response(content, mimetype="text/html")
 
 
