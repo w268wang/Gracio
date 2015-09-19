@@ -11,7 +11,6 @@ try:
         url = 'mongodb://localhost:27017'
     else:
         url = 'mongodb://' + AWS_IP_ADDRESS + ':27017'
-    print(url)
     client = pymongo.MongoClient(url)
     db = client[DB_NAME]
 except urllib2.HTTPError:
