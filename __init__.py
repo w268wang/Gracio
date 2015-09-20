@@ -112,7 +112,7 @@ def get_user():
 @app.route("/provide_ride")
 def provide_ride():
     user_id = request.args.get("user_id")
-    time = request.args.get("time")
+    time = int(request.args.get("time"))
     target_address = request.args.get("target_address")
     quantity = request.args.get("quantity")
 
@@ -123,7 +123,7 @@ def provide_ride():
 @app.route("/get_provided_ride")
 def get_provided_ride():
     target_address = request.args.get("target_address")
-    time = request.args.get("time")
+    time = int(request.args.get("time"))
 
     return json.dumps(mongo.get_provide_info_list(time, target_address))
 
@@ -131,18 +131,18 @@ def get_provided_ride():
 @app.route("/request_ride")
 def request_ride():
     user_id = request.args.get("user_id")
-    time = request.args.get("time")
+    time = int(request.args.get("time"))
     target_address = request.args.get("target_address")
     quantity = request.args.get("quantity")
 
-    mongo.add_provide_info(user_id, time, target_address, quantity)
+    mongo.add_request_info(user_id, time, target_address, quantity)
     return json.dumps({"status": 200})
 
 
 @app.route("/get_requested_ride")
 def get_requested_ride():
     target_address = request.args.get("target_address")
-    time = request.args.get("time")
+    time = int(request.args.get("time"))
 
     return json.dumps(mongo.get_request_info_list(time, target_address))
 

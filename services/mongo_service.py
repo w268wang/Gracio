@@ -116,14 +116,20 @@ def get_provide_info_list(time, target_address):
     collection = db["provide_info"]
     mongo_key = {"target_address": target_address, "time": {"$lt": time}}
     result = collection.find(mongo_key).sort([("time", 1)])
-    return list(result)
+    return map(lambda element: {"user_id": element["user_id"],
+                                "time": element["time"],
+                                "target_address": element["target_address"],
+                                "quantity": element["quantity"]}, list(result))
 
 
 def get_request_info_list(time, target_address):
     collection = db["request_info"]
     mongo_key = {"target_address": target_address, "time": {"$gt": time}}
     result = collection.find(mongo_key).sort([("time", 1)])
-    return list(result)
+    return map(lambda element: {"user_id": element["user_id"],
+                                "time": element["time"],
+                                "target_address": element["target_address"],
+                                "quantity": element["quantity"]}, list(result))
 
 
 if __name__ == "__main__":
@@ -138,11 +144,11 @@ if __name__ == "__main__":
     print(get_objectid_by_userid("fakfasdf"))
 
     # test ride part
-    add_provide_info("fakfasdf", int(time_util.time()), "123, 234")
+    add_provide_info("fakfasdf", int(time_util.time()), "123234", 1)
     print(int(time_util.time()) + 1)
-    print(get_provide_info_list(int(time_util.time()) + 1, "123, 234"))
+    print(get_provide_info_list(int(time_util.time()) + 1, "123234"))
 
-    add_request_info("fakfasdf", int(time_util.time()), "123, 234")
+    add_request_info("fakfasdf", int(time_util.time()), "123234", 1)
     print(int(time_util.time()) - 5)
-    print(get_request_info_list(int(time_util.time()) - 5, "123, 234"))
+    print(get_request_info_list(int(time_util.time()) - 5, "123234"))
 
