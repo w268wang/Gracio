@@ -15,7 +15,6 @@ function getId() {
 userId
 
 function initialize(position) {
-    alert(Cookies.get("user_id"));
     var mapCanvas = document.getElementById('mapBox');
     console.log(position);
     var coordinates = new google.maps.LatLng(43.4667, -80.5167);
