@@ -100,6 +100,13 @@ def fill_user():
     return json.dumps({"status": 200})
 
 
+@app.route("/get_user")
+def get_user():
+    user_id = request.args.get("user_id")
+
+    return json.dumps(mongo.get_user(user_id))
+
+
 @app.route("/provide_ride")
 def provide_ride():
     user_id = request.args.get("user_id")
@@ -111,6 +118,14 @@ def provide_ride():
     return json.dumps({"status": 200})
 
 
+@app.route("/get_provided_ride")
+def get_provided_ride():
+    target_address = request.args.get("target_address")
+    time = request.args.get("time")
+
+    return json.dumps(mongo.get_provide_info_list(time, target_address))
+
+
 @app.route("/request_ride")
 def request_ride():
     user_id = request.args.get("user_id")
@@ -120,6 +135,14 @@ def request_ride():
 
     mongo.add_provide_info(user_id, time, target_address, quantity)
     return json.dumps({"status": 200})
+
+
+@app.route("/get_requested_ride")
+def get_requested_ride():
+    target_address = request.args.get("target_address")
+    time = request.args.get("time")
+
+    return json.dumps(mongo.get_request_info_list(time, target_address))
 
 
 if __name__ == "__main__":
