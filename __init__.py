@@ -104,7 +104,9 @@ def fill_user():
 def get_user():
     user_id = request.args.get("user_id")
 
-    return json.dumps(mongo.get_user(user_id))
+    user = mongo.get_user(user_id)
+    return json.dumps({"user_id": user_id, "phone_number": user["phone_number"],
+                       "email": user["email"], "nickname": user["nickname"]})
 
 
 @app.route("/provide_ride")
