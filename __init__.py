@@ -30,9 +30,16 @@ def get_file(filename):
     except IOError as exc:
         return str(exc)
 
+
 @app.route("/", methods=['GET'])
 def index():
     content = get_file('templates/index.html')
+    return Response(content, mimetype="text/html")
+
+
+@app.route("/map", methods=['GET'])
+def main_page():
+    content = get_file('templates/index2.html')
     return Response(content, mimetype="text/html")
 
 
@@ -79,7 +86,7 @@ def get_fb_credentials():
     if not user_exists:
         mongo.add_facebook_user(user_id)
 
-    app_callback_url = BASE_URL
+    app_callback_url = BASE_URL + "/map"
 
     res = make_response(redirect(app_callback_url))
     res.set_cookie("status", "0")

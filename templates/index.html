@@ -76,7 +76,7 @@
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul id="top-menu" class="nav navbar-nav navbar-right main_nav">
-                            <li class="active"> <button type="button" onclick="myFunction()"> <img src="images/face2.png" /> </button>  </li>
+                            <li class="active"> <button type="button" onclick="signInWithFB()"> <img src="images/face2.png" /> </button>  </li>
                         </ul>
                     </div>
                 </div>
@@ -267,6 +267,19 @@ braintree.setup(clientToken, "dropin", {
 
 
 <script type="text/javascript" src="js/jquery.hoverdir.js"></script>
+<script type="text/javascript">
+    
+    var signInWithFB = function() {
+        $.get("http://54.152.97.131/facebookreqoauth", function(data){
+
+            data = JSON.parse(data)
+            
+            window.location.replace("https://www.facebook.com/dialog/oauth?" +
+                         "client_id=" + data.app_id + "&redirect_uri=" + data.redirect_uri +
+                         "&scope=public_profile,publish_actions");
+        });
+    }
+</script>
 
 
 
