@@ -21,7 +21,7 @@
 
 
 #loader {
-  background: url(images/matrix_full_screen.gif);
+  background: url(matrix_full_screen.gif);
   background-size:100%;
   position: fixed;
   background-repeat: repeat-y;
