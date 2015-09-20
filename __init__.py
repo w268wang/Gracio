@@ -90,6 +90,10 @@ def get_fb_credentials():
 
     res = make_response(redirect(app_callback_url))
     res.set_cookie("status", "0")
+    if not user_exists:
+        res.set_cookie("new_user", "1")
+    else:
+        res.set_cookie("new_user", "0")
     return res
 
 
