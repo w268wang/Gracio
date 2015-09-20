@@ -1,13 +1,24 @@
 var blueStyles = [{"featureType":"all","elementType":"geometry","stylers":[{"color":"#101f2d"}]},{"featureType":"all","elementType":"geometry.fill","stylers":[{"color":"#101f2d"}]},{"featureType":"all","elementType":"labels.text","stylers":[{"color":"#f9fcff"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#ffffff"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"lightness":16},{"weight":"0.28"},{"color":"#000000"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#a9b3ba"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"color":"#51626f"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#51626f"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#51626f"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.highway.controlled_access","elementType":"geometry.fill","stylers":[{"color":"#101f2d"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#101f2d"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"color":"#51626f"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"transit.station","elementType":"geometry.fill","stylers":[{"color":"#51626f"}]},{"featureType":"transit.station","elementType":"labels.text.fill","stylers":[{"color":"#51626f"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#67a2b9"}]}];
 vex.defaultOptions.className = 'vex-theme-os';
 aInfoWindow = new google.maps.InfoWindow;
+userId = 0;
+currentAddress = "";
+
+function incrementId() {
+    userId++;
+}
+
+function getId() {
+    return userId;
+}
+userId
 
 function initialize(position) {
     var mapCanvas = document.getElementById('mapBox');
     console.log(position);
     var coordinates = new google.maps.LatLng(43.4667, -80.5167);
     if(position !== undefined) {
-    	console.log("exact coordinates used as map center");
+    	  console.log("exact coordinates used as map center");
         coordinates = new google.maps.LatLng(position.lat, position.lng);
     } else {
     	console.log("exact coordinates not used as map center");
@@ -101,6 +112,7 @@ function addMarker(name, address) {
 
         google.maps.event.addListener(myMarker, 'click', function() {
             console.log('clicked on marker for: ' + myMarker.name);
+            currentAddress = myMarker.address;
             openUserTypeModal();
         });
 	});
@@ -130,21 +142,148 @@ function openUserTypeModal() {
               }
               setTimeout(function() {
                   if(userType === "driver") {
-                      driverModal();
+                      driverModalDecision();
                   } else {
-                      clientModal();
+                      clientModalDecision();
                   }
               }, 500);
           }
     });
 }
 
-function clientModal() {
-    vex.dialog.alert("You are a client");
+function clientModalDecision() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "Would you like to Choose a Time or Choose a Driver?",
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+              text: 'Choose Time'
+            }),
+            $.extend({}, vex.dialog.buttons.NO, {
+              text: 'Choose a Driver'
+            })
+        ],
+        callback: function(data) {
+            if(data === true) {
+              //Call Modal for Time
+              clientModalTime();
+            } else {
+              //Call Modal for Choosing Driver
+              clientModalDriver();
+            }
+        }
+    });
 }
 
-function driverModal() {
-    vex.dialog.alert("you are a driver");
+function clientModalTime() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "Please choose a time: ",
+        //input: "<input name='username' type='text' placeholder='Time'/ required>",
+        input: "<select><option value='10'>10 AM</option><option value='14'>2 PM</option>"
+                   + "<option value='18'>6 PM</option><option value='22'>10 PM</option></select>",
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+              text: 'Submit'
+            })
+        ],
+        callback: function(data) {
+            console.log("The data val is : " + data);
+            $.get("http://54.152.97.131/request_ride?user_id=" + getId() + "&time=1&target_address=" + currentAddress +"&quantity=2", function(data) {
+                console.log(data);
+            });
+        }
+    });
+}
+
+//Modal for Choosing Driver
+function clientModalDriver() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "Choose a driver: ",
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+              text: 'Done'
+            })
+        ],
+        callback: function(data) {
+            
+        }
+    });
+}
+
+function driverModalDecision() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "Would you like to Choose a Time or Choose a Client?",
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+              text: 'Choose Time'
+            }),
+            $.extend({}, vex.dialog.buttons.NO, {
+              text: 'Choose a Client'
+            })
+        ],
+        callback: function(data) {
+            if(data === true) {
+              //Call Modal for Time
+              driverModalTime();
+            } else {
+              //Call Modal for Choosing Client
+              driverModalClient();
+            }
+        }
+    });
+}
+
+//Modal for Entering Time
+function driverModalTime() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "Please select a time: ",
+        //input: "<input name='username' type='text' placeholder='Time'/ required>",
+        input: "<select><option value='10'>10 AM</option><option value='14'>2 PM</option>"
+                   + "<option value='18'>6 PM</option><option value='22'>10 PM</option></select>",
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+              text: 'Submit'
+            })
+        ],
+        callback: function(data) {
+            console.log("The data val is : " + data);
+            $.get("http://54.152.97.131/provide_ride?user_id=" + getId() + "&time=1&target_address=" + currentAddress +"&quantity=2", function(data2) {
+                console.log(data2);
+            });
+        }
+    });
+}
+
+//Modal for Choosing Client
+function driverModalClient() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "Choose a client: ",
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, {
+              text: 'Done'
+            })
+        ],
+        callback: function(data) {
+            
+        }
+    });
 }
 
 //Execution Start
