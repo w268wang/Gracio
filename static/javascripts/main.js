@@ -15,6 +15,9 @@ function getId() {
 userId
 
 function initialize(position) {
+    if (Cookies.get("new_user") === "1") {
+      firstTimeUserTypeModal();
+    }
     var mapCanvas = document.getElementById('mapBox');
     console.log(position);
     var coordinates = new google.maps.LatLng(43.4667, -80.5167);
@@ -148,6 +151,40 @@ function openUserTypeModal() {
                       clientModalDecision();
                   }
               }, 500);
+          }
+    });
+}
+
+function firstTimeUserTypeModal() {
+    vex.dialog.open({
+        showCloseButton: false,
+        escapeButtonCloses: false,
+        overlayClosesOnClick: false,
+        message: "user id: " + getId(),
+        input: ""
+            <input name="nickname" type="text" placeholder="Nickname" required />
+            <input name="phonenumber" type="text" placeholder="Phone #" required />
+            <input name="email" type="text" placeholder="email" required />
+        "",
+        buttons: [
+              $.extend({}, vex.dialog.buttons.YES, {
+                text: 'Confirm'
+              })
+          ],
+          callback: function(data) {
+              var userType;
+              if(data === false) {
+                firstTimeUserTypeModal();
+              } else {
+                  console.log("user_id: " + getId(), "nickname: " + data.nickname,
+                    "phonenumber: " + data.phonenumber, "email: " + data.email);
+
+                  $.get("http://54.152.97.131/fill_user?user_id=" + getId() + "&nickname="
+                    + data.nickname + "&phonenumber=" + data.phonenumber +"&email=" + data.email
+                    , function(data) {
+                      console.log(data);
+                  });
+              }
           }
     });
 }
