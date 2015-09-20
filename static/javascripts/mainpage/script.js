@@ -219,51 +219,7 @@ function animation() {
     })
 }
 
-function bxslider() {
-    var a = !1;
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) && (a = !0), $(".fullwidth-slider").bxSlider({
-        mode: "fade",
-        speed: 1e3,
-        pager: !1,
-        onSlideBefore: function (a) {
-            a.find(".slide-caption").fadeOut().animate({
-                top: "100px"
-            }, {
-                queue: !1,
-                easing: "easeOutQuad",
-                duration: 550
-            }), a.find(".slide-caption").hide().animate({
-                top: "-100px"
-            })
-        },
-        onSlideAfter: function (a) {
-            a.find(".slide-caption").fadeIn().animate({
-                top: "0"
-            }, {
-                queue: !1,
-                easing: "easeOutQuad",
-                duration: 450
-            })
-        }
-    }), $(".bx-wrapper .bx-controls-direction a").attr("data-500", "top:83%; opacity: 0;").attr("data-start", "top:50%; opacity: 1;"), a === !1 && $(".parallax-slider").length && skrollr.init({
-        edgeStrategy: "set",
-        smoothScrolling: !1,
-        forceHeight: !1
-    }), $(".project-slider").bxSlider({
-        controls: !0,
-        pager: !1,
-        auto: !0,
-        pause: 3e3,
-        preloadImages: "all"
-    }), $(".blog-slider").bxSlider({
-        controls: !0,
-        pager: !1,
-        auto: !1,
-        pause: 3e3,
-        preloadImages: "visible"
-    })
-}
-
+        
 function projectExpand() {
     var a = ($("#project-page-holder"), $("#portfolio-wrap .open-project-link"));
     index = a.length, $("#portfolio-wrap .open-project-link").click(function () {
@@ -334,10 +290,6 @@ function mediaElements() {
 
 
 
-function parallaxInit() {
-    $("#parallax-container").parallax("30%", .1), $("#testimonials").parallax("30%", .1)
-}
-
 function proSlide(){
     $(".team_slider").slick({
                             dots: false,
@@ -379,10 +331,10 @@ function proHober(){
 
 $(document).ready(function () {
     "use strict";
-    proSlide(),proHober(), scrollNav(), mobileMenu(), heroSlider(), prettyphoto(), portfolio(), portfolioExpander(), animation(), bxslider(), mediaElements()
+    proSlide(),proHober(), scrollNav(), mobileMenu(), heroSlider(), prettyphoto(), portfolio(), portfolioExpander(), animation(), mediaElements()
 }), $(window).load(function () {
     "use strict";
-     loader(), projectExpand(), parallaxInit()
+     loader(), projectExpand()
 }), $(window).scroll(function () {
     "use strict";
     showNav(), activateParallax()
