@@ -31,6 +31,14 @@ def get_file(filename):
         return str(exc)
 
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
+
 @app.route("/", methods=['GET'])
 def index():
     content = get_file('templates/index.html')
@@ -90,6 +98,7 @@ def get_fb_credentials():
 
     res = make_response(redirect(app_callback_url))
     res.set_cookie("status", "0")
+    res.set_cookie("user_id", user_id)
     if not user_exists:
         res.set_cookie("new_user", "1")
     else:
