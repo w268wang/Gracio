@@ -3,6 +3,9 @@ vex.defaultOptions.className = 'vex-theme-os';
 aInfoWindow = new google.maps.InfoWindow;
 userId = 0;
 currentAddress = "";
+currentName = "";
+properAddress = "";
+properName = "";
 
 function incrementId() {
     userId++;
@@ -12,7 +15,6 @@ function getId() {
     // return userId;
     return Cookies.get("user_id");
 }
-userId
 
 function initialize(position) {
     if (Cookies.get("new_user") === "1") {
@@ -92,7 +94,11 @@ function getMarketData(coordinates) {
 
 function addMarker(name, address) {
 	var addressWithPlusSigns = address.replace(/\s/g, "+");
+  var nameWithPlusSigns = name.replace(/\s/g, "+");
 	console.log(addressWithPlusSigns);
+  console.log("Address without Plus Signs is: " + address);
+  console.log(nameWithPlusSigns);
+  console.log("Name without Plus Signs is: " + name);
 	$.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + addressWithPlusSigns + "&key=AIzaSyCdy-RgRgSlmHFzMeBPn5s_0wU5Ez1rJLE", function(data2){
 		var lat = data2.results[0].geometry.location.lat;
 		var lng = data2.results[0].geometry.location.lng;
@@ -104,6 +110,10 @@ function addMarker(name, address) {
         });
         myMarker.name = name;
         myMarker.address = address;
+        currentAddress = addressWithPlusSigns;
+        currentName = name;
+        properAddress = address;
+        properName = name;
 
         google.maps.event.addListener(myMarker, 'mouseover', function() {
             aInfoWindow.setContent(myMarker.name);
@@ -116,7 +126,6 @@ function addMarker(name, address) {
 
         google.maps.event.addListener(myMarker, 'click', function() {
             console.log('clicked on marker for: ' + myMarker.name);
-            currentAddress = myMarker.address;
             openUserTypeModal();
         });
 	});
@@ -127,7 +136,7 @@ function openUserTypeModal() {
     	  showCloseButton: false,
     	  escapeButtonCloses: false,
     	  overlayClosesOnClick: false,
-    	  message: "Are you a driver or a client?",
+    	  message: "Store: " + currentName + ", Address is: " + properAddress + "\n - Are you a driver or a client?",
     	  buttons: [
               $.extend({}, vex.dialog.buttons.YES, {
                 text: 'Driver'
@@ -161,12 +170,8 @@ function firstTimeUserTypeModal() {
         escapeButtonCloses: false,
         overlayClosesOnClick: false,
         message: "user id: " + getId(),
-        input: ""
-            <input name="nickname" type="text" placeholder="Nickname" required />
-            <input name="phonenumber" type="text" placeholder="Phone #" required />
-            <input name="email" type="text" placeholder="email" required />
-        "",
-        buttons: [
+        input: "<input name='nickname' type='text' placeholder='Nickname' required /><input name='phonenumber' type='text' placeholder='Phone #'' required /><input name='email' type='text' placeholder='email' required />",
+        buttons: [ 
               $.extend({}, vex.dialog.buttons.YES, {
                 text: 'Confirm'
               })
@@ -231,7 +236,7 @@ function clientModalTime() {
         ],
         callback: function(data) {
             console.log("The data val is : " + data);
-            $.get("http://54.152.97.131/request_ride?user_id=" + getId() + "&time=1&target_address=" + currentAddress +"&quantity=2", function(data) {
+            $.get("http://54.152.97.131/request_ride?user_id=" + getId() + "&time=2&target_address=" + currentAddress +"&quantity=2", function(data) {
                 console.log(data);
             });
         }
@@ -240,6 +245,9 @@ function clientModalTime() {
 
 //Modal for Choosing Driver
 function clientModalDriver() {
+    $.get("http://54.152.97.131/get_provided_ride?target_address=" + currentAddress + "&time=2" , function(data) {
+        console.log("Response of client looking for driver: " + data);
+    });
     vex.dialog.open({
         showCloseButton: false,
         escapeButtonCloses: false,
@@ -299,7 +307,8 @@ function driverModalTime() {
         ],
         callback: function(data) {
             console.log("The data val is : " + data);
-            $.get("http://54.152.97.131/provide_ride?user_id=" + getId() + "&time=1&target_address=" + currentAddress +"&quantity=2", function(data2) {
+            console.log("Value of GetID is : " + getId());
+            $.get("http://54.152.97.131/provide_ride?user_id=" + getId() + "&time=2&target_address=" + currentAddress +"&quantity=2", function(data2) {
                 console.log(data2);
             });
         }
@@ -319,7 +328,9 @@ function driverModalClient() {
             })
         ],
         callback: function(data) {
-            
+            $.get("http://54.152.97.131/get_provided_ride?target_address=" + currentAddress + "&time=2" , function() {
+
+            });
         }
     });
 }
