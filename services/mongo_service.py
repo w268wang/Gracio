@@ -112,7 +112,7 @@ def add_request_info(user_id, time, target_address, quantity):
 
 def get_provide_info_list(time, target_address):
     collection = db["provide_info"]
-    mongo_key = {"target_address": target_address, "time": {"$lt": time}}
+    mongo_key = {"target_address": target_address}#, "time": {"$lt": time}}
     result = collection.find(mongo_key).sort([("time", 1)])
     return map(lambda element: {"user_id": element["user_id"],
                                 "time": element["time"],
@@ -122,7 +122,7 @@ def get_provide_info_list(time, target_address):
 
 def get_request_info_list(time, target_address):
     collection = db["request_info"]
-    mongo_key = {"target_address": target_address, "time": {"$gt": time}}
+    mongo_key = {"target_address": target_address}#, "time": {"$gt": time}}
     result = collection.find(mongo_key).sort([("time", 1)])
     return map(lambda element: {"user_id": element["user_id"],
                                 "time": element["time"],
