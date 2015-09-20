@@ -108,7 +108,7 @@ def get_fb_credentials():
 
 # to fill in information like phone number and email (since in fb_callback,
 # each user only have userid set)
-#   Example: /fill_user?user_id=test&phong_number=1234567890&email=example@test.com&nickname=test_nick_name
+#   Example: /fill_user?user_id=test&phone_number=1234567890&email=example@test.com&nickname=test_nick_name
 @app.route("/fill_user")
 def fill_user():
     user_id = request.args.get("user_id")
