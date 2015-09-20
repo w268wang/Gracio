@@ -10,12 +10,12 @@ function incrementId() {
 
 function getId() {
     // return userId;
-    return $.cookie("user_id");
+    return Cookies.get("user_id");
 }
 userId
 
 function initialize(position) {
-    alert($.cookie("user_id"));
+    alert(Cookies.get("user_id"));
     var mapCanvas = document.getElementById('mapBox');
     console.log(position);
     var coordinates = new google.maps.LatLng(43.4667, -80.5167);
