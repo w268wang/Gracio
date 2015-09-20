@@ -98,7 +98,6 @@ def get_objectid_by_userid(user_id):
 
 def add_provide_info(user_id, time, target_address, quantity):
     collection = db["provide_info"]
-    user_id = get_objectid_by_userid(user_id)
     doc = {"user_id": user_id, "time": time, "target_address": target_address, "quantity": quantity}
     collection.insert(doc)
     return
@@ -106,7 +105,6 @@ def add_provide_info(user_id, time, target_address, quantity):
 
 def add_request_info(user_id, time, target_address, quantity):
     collection = db["request_info"]
-    user_id = get_objectid_by_userid(user_id)
     doc = {"user_id": user_id, "time": time, "target_address": target_address, "quantity": quantity}
     collection.insert(doc)
     return
