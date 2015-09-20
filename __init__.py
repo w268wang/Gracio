@@ -22,19 +22,10 @@ fb_debug_token_url = "https://graph.facebook.com/debug_token?"
 
 app = Flask(__name__, static_url_path='')
 
-# TODO: address? post code : detailed address; <- let user type in when they want to request or provide a ride
-#       add provider
-#       add consumer
 
-
-def get_file(filename):  # pragma: no cover
+def get_file(filename):
     try:
         src = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)
-        # Figure out how flask returns static files
-        # Tried:
-        # - render_template
-        # - send_file
-        # This should not be so non-obvious
         return open(src).read()
     except IOError as exc:
         return str(exc)
