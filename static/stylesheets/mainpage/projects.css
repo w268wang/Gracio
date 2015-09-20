@@ -1,0 +1,18 @@
+.white-popup {
+	position: relative;
+	background: #FFF;
+	padding: 20px;
+	width: auto;
+	max-width: 500px;
+	margin: 20px auto;
+}
+
+.resized-image {
+	display: block;
+	width: 271px;
+	height: 271px;
+}
+
+.project-tile {
+	
+}
